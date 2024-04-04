@@ -13,7 +13,7 @@ export const shazamCoreApi = createApi({
         }
     }),
     endpoints:(builder) => ({
-        getTopCharts: builder.query({query: () => 'charts/get-top-songs-in_world_by_genre?genre=POP&limit=10'})
+        getTopCharts: builder.query({query: () => 'charts/get-top-songs-in_world_by_genre?genre=POP&limit=50'})
     })
 })
 
