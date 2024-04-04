@@ -3,21 +3,19 @@ import { useDispatch } from "react-redux";
 
 import PlayPause from "./PlayPause";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
-import { useState } from "react";
 
 const SongCard = (song, isPlaying, activeSong, data, i) => {
-	// const [activeSong, setActiveSong] = useState(true)
-	// const activeSong = "Beautiful Things";
+	const dispatch = useDispatch();
+	
+	// console.log(song.song)
 
-  const handlePauseClick = () => {
-    console.log("hi")
-  }
-  const handlePlayClick = () => {
-    console.log("hi")
-
-  }
-
-
+	const handlePauseClick = () => {
+		dispatch(playPause(false));
+	};
+	const handlePlayClick = () => {
+		dispatch(setActiveSong({ song: song.song, data, i }));
+		dispatch(playPause(true));
+	};
 
 	return (
 		<div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
@@ -29,30 +27,32 @@ const SongCard = (song, isPlaying, activeSong, data, i) => {
 							: "hidden"
 					}`}
 				>
-          <PlayPause
-            isPlaying={isPlaying}
-            activeSong={activeSong}
-            song={song}
-            handlePause = {handlePauseClick}
-            handlePlay = {handlePlayClick}
-          />
-        </div>
-        <img src={song?.song?.images?.coverart} alt="song_img" />
-        
+					<PlayPause
+						isPlaying={isPlaying}
+						activeSong={activeSong}
+						song={song.song}
+						handlePause={handlePauseClick}
+						handlePlay={handlePlayClick}
+					/>
+				</div>
+				<img src={song?.song?.images?.coverart} alt="song_img" className="w-full h-full rounded-lg"/>
 			</div>
-      <div className="mt-4 flex flex-col">
-        <p className="font-semibold text-lg text-white truncate">
-          <Link to={`/songs/${song.song?.key}`}>
-            {song.song.title}
-          </Link>
-        </p>
-        <p className="text-sm truncate text-gray-300 mt-1">
-          <Link to={song.song.artists ? `/artists/${song.song?.artists[0]?.adamid}` : '/top-artists' }>
-            {song.song.subtitle}
-          </Link> 
-          
-        </p>
-      </div>
+			<div className="mt-4 flex flex-col">
+				<p className="font-semibold text-lg text-white truncate">
+					<Link to={`/songs/${song.song?.key}`}>{song.song.title}</Link>
+				</p>
+				<p className="text-sm truncate text-gray-300 mt-1">
+					<Link
+						to={
+							song.song.artists
+								? `/artists/${song.song?.artists[0]?.adamid}`
+								: "/top-artists"
+						}
+					>
+						{song.song.subtitle}
+					</Link>
+				</p>
+			</div>
 		</div>
 	);
 };
